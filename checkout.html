@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <title>صفحة الدفع - مكتبة قوالب Excel</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  </head>
+  <body class="bg-gray-50">
+    <!-- WhatsApp Button -->
+    <div class="fixed right-4 bottom-4 z-50 flex flex-col items-end space-y-2 animate-bounce">
+      <div class="bg-white px-4 py-2 rounded-lg shadow-lg text-sm">
+        💬 لأي استفسار؟ تواصل معنا الآن!
+      </div>
+      <a href="https://wa.me/212601754736" 
+         target="_blank"
+         class="bg-green-500 text-white p-3 md:p-4 rounded-full shadow-lg hover:bg-green-600 transition-all duration-300 hover:scale-110">
+        <i class="fab fa-whatsapp text-2xl md:text-3xl"></i>
+      </a>
+    </div>
+
+    <!-- Announcement Banner -->
+    <div class="bg-blue-600 text-white text-center py-2 md:py-3 px-4">
+      <p class="text-sm md:text-base">🚨 خصم 60% لفترة محدودة! سارع بالشراء</p>
+    </div>
+
+    <!-- Payment Modal -->
+    <div id="paymentModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4">
+      <div id="bankModal" class="bg-white rounded-lg p-4 w-full max-w-md relative overflow-y-auto max-h-[90vh] hidden">
+        <button onclick="closePaymentModal()" class="absolute top-2 left-2 text-gray-500 hover:text-gray-700">
+          <i class="fas fa-times text-xl"></i>
+        </button>
+        
+        <!-- Payment Timer (Hidden by default) -->
+        <div id="paymentTimerContainer" class="hidden">
+          <div class="bg-yellow-50 p-3 rounded-lg mb-3">
+            <p class="text-center font-bold text-base">وقت انتهاء صلاحية الدفع:</p>
+            <div id="paymentTimer" class="text-center text-xl font-bold text-red-600 mt-1">15:00</div>
+          </div>
+        </div>
+
+        <!-- Bank Options -->
+        <div id="bankOptions">
+          <h3 class="text-lg font-bold mb-3 text-center">اختر طريقة التحويل</h3>
+          <div class="grid grid-cols-3 gap-2">
+            <!-- Virement Bancaire -->
+            <div class="bank-option cursor-pointer" data-bank="virement">
+              <img src="https://itsdigitalmart.pages.dev/virement.png" alt="تحويل بنكي" class="w-full h-16 object-contain rounded-lg mb-1">
+              <p class="text-center font-bold text-xs">تحويل بنكي</p>
+            </div>
+            <!-- CIH Bank -->
+            <div class="bank-option cursor-pointer" data-bank="cih">
+              <img src="https://itsdigitalmart.pages.dev/idz2kURuXb_logos.png" alt="CIH Bank" class="w-full h-16 object-contain rounded-lg mb-1">
+              <p class="text-center font-bold text-xs">CIH Bank</p>
+            </div>
+            <!-- Cash Plus -->
+            <div class="bank-option cursor-pointer" data-bank="cashplus">
+              <img src="https://itsdigitalmart.pages.dev/cashplus.webp" alt="Cash Plus" class="w-full h-16 object-contain rounded-lg mb-1">
+              <p class="text-center font-bold text-xs">Cash Plus</p>
+            </div>
+          </div>
+
+          <!-- Bank Details Container -->
+          <div id="bankDetailsModal" class="mt-3 hidden">
+            <!-- Virement Bancaire Details -->
+            <div id="virementDetails" class="bank-details hidden">
+              <div class="space-y-2">
+                <div>
+                  <p class="font-bold text-gray-700 text-sm mb-1">رقم الحساب (RIB):</p>
+                  <div class="flex items-center space-x-2">
+                    <button onclick="copyToClipboard('virementRib')" class="bg-blue-100 p-2 rounded-lg hover:bg-blue-200 transition-colors">
+                      <i class="far fa-copy"></i>
+                    </button>
+                    <p id="virementRib" class="bg-gray-50 p-2 rounded-lg select-all font-mono text-sm flex-1">123456789123456789123456</p>
+                  </div>
+                </div>
+                <div>
+                  <p class="font-bold text-gray-700 text-sm mb-1">اسم صاحب الحساب:</p>
+                  <p class="bg-gray-50 p-2 rounded-lg select-all text-sm">Zakariae</p>
+                </div>
+                <div class="bg-yellow-50 p-2 rounded-lg">
+                  <p class="text-yellow-800 font-bold text-sm mb-1">⚡ ملاحظة هامة:</p>
+                  <ul class="text-yellow-800 text-xs space-y-1">
+                    <li>• يرجى استخدام خدمة الدفع الفوري للتحويل</li>
+                    <li>• يمكنك التحويل من أي بنك مغربي</li>
+                    <li>• بعد التحويل، يرجى تعبئة النموذج أدناه</li>
+                    <li>• بعد التحويل، سيتم إرسال الباقة على الواتساب والبريد الإلكتروني</li>
+                  </ul>
+                </div>
+                <!-- Payment Confirmation -->
+                <div class="mt-3 space-y-2">
+                  <label class="flex items-center space-x-2 space-x-reverse cursor-pointer">
+                    <input type="checkbox" id="confirmPayment" class="form-checkbox h-4 w-4 text-blue-600">
+                    <span class="text-gray-700 text-sm">أؤكد أنني قمت بتحويل المبلغ</span>
+                  </label>
+                  <button 
+                    id="confirmButton"
+                    disabled
+                    onclick="handlePaymentConfirmation()"
+                    class="w-full bg-blue-600 text-white py-2 rounded-lg font-bold text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-blue-700 transition-colors"
+                  >
+                    تم الإرسال
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- CIH Bank Details -->
+            <div id="cihDetails" class="bank-details hidden">
+              <div class="space-y-2">
+                <div>
+                  <p class="font-bold text-gray-700 text-sm mb-1">رقم الحساب (RIB):</p>
+                  <div class="flex items-center space-x-2">
+                    <button onclick="copyToClipboard('cihRib')" class="bg-blue-100 p-2 rounded-lg hover:bg-blue-200 transition-colors">
+                      <i class="far fa-copy"></i>
+                    </button>
+                    <p id="cihRib" class="bg-gray-50 p-2 rounded-lg select-all font-mono text-sm flex-1">123456789123456789123456</p>
+                  </div>
+                </div>
+                <div>
+                  <p class="font-bold text-gray-700 text-sm mb-1">اسم صاحب الحساب:</p>
+                  <p class="bg-gray-50 p-2 rounded-lg select-all text-sm">Zakariae</p>
+                </div>
+                <div class="bg-yellow-50 p-2 rounded-lg">
+                  <p class="text-yellow-800 font-bold text-sm mb-1">⚡ ملاحظة هامة:</p>
+                  <ul class="text-yellow-800 text-xs space-y-1">
+                    <li>• بعد التحويل، سيتم إرسال الباقة على الواتساب والبريد الإلكتروني</li>
+                  </ul>
+                </div>
+                <!-- Payment Confirmation -->
+                <div class="mt-3 space-y-2">
+                  <label class="flex items-center space-x-2 space-x-reverse cursor-pointer">
+                    <input type="checkbox" id="confirmPaymentCih" class="form-checkbox h-4 w-4 text-blue-600">
+                    <span class="text-gray-700 text-sm">أؤكد أنني قمت بتحويل المبلغ</span>
+                  </label>
+                  <button 
+                    id="confirmButtonCih"
+                    disabled
+                    onclick="handlePaymentConfirmation()"
+                    class="w-full bg-blue-600 text-white py-2 rounded-lg font-bold text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-blue-700 transition-colors"
+                  >
+                    تم الإرسال
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Cash Plus Details -->
+            <div id="cashplusDetails" class="bank-details hidden">
+              <div class="space-y-4">
+                <!-- Phone Number -->
+                <div class="text-center">
+                  <p class="text-lg font-bold text-gray-800 mb-2 shadow-sm p-2 rounded-lg bg-blue-50">للإرسال من التطبيق مباشرة</p>
+                  <div>
+                    <p class="font-bold text-gray-700 text-sm mb-1">رقم الهاتف:</p>
+                    <div class="flex items-center space-x-2">
+                      <button onclick="copyToClipboard('cashplusPhone')" class="bg-blue-100 p-2 rounded-lg hover:bg-blue-200 transition-colors">
+                        <i class="far fa-copy"></i>
+                      </button>
+                      <p id="cashplusPhone" class="bg-gray-50 p-2 rounded-lg select-all font-mono text-sm flex-1">123456789123456789123456</p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Agency Instructions -->
+                <div class="text-center">
+                  <p class="text-lg font-bold text-gray-800 mb-2 shadow-sm p-2 rounded-lg bg-blue-50">للإرسال من الوكالة تواصل معنا على الواتساب</p>
+                  <a href="https://wa.me/212601754736" 
+                     target="_blank"
+                     class="inline-flex items-center justify-center space-x-2 space-x-reverse bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 transition-colors text-sm shadow-md">
+                    <i class="fab fa-whatsapp text-xl"></i>
+                    <span>تواصل معنا على الواتساب</span>
+                  </a>
+                </div>
+
+                <!-- Important Note -->
+                <div class="bg-yellow-50 p-2 rounded-lg">
+                  <p class="text-yellow-800 font-bold text-sm mb-1">⚡ ملاحظة هامة:</p>
+                  <ul class="text-yellow-800 text-xs space-y-1">
+                    <li>• بعد التحويل، سيتم إرسال الباقة على الواتساب والبريد الإلكتروني</li>
+                  </ul>
+                </div>
+
+                <!-- Payment Confirmation -->
+                <div class="mt-3 space-y-2">
+                  <label class="flex items-center space-x-2 space-x-reverse cursor-pointer">
+                    <input type="checkbox" id="confirmPaymentCashplus" class="form-checkbox h-4 w-4 text-blue-600">
+                    <span class="text-gray-700 text-sm">أؤكد أنني قمت بتحويل المبلغ</span>
+                  </label>
+                  <button 
+                    id="confirmButtonCashplus"
+                    disabled
+                    onclick="handlePaymentConfirmation()"
+                    class="w-full bg-blue-600 text-white py-2 rounded-lg font-bold text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-blue-700 transition-colors"
+                  >
+                    تم الإرسال
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="cardPaypalModal" class="bg-white rounded-lg p-4 relative hidden">
+        <button onclick="closePaymentModal()" class="absolute top-2 left-2 text-gray-500 hover:text-gray-700">
+          <i class="fas fa-times text-xl"></i>
+        </button>
+
+        <!-- Hotmart Payment -->
+        <div id="hotmartPayment" class="w-[800px] h-[600px] overflow-hidden">
+          <iframe 
+            src="https://pay.hotmart.com/G97190541N" 
+            frameborder="0" 
+            class="w-full h-full"
+            style="aspect-ratio: 4/3;"
+          ></iframe>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Checkout Form -->
+    <div class="min-h-screen flex items-center justify-center p-4">
+      <div class="bg-blue-50 rounded-3xl p-4 sm:p-6 w-full max-w-md">
+        <!-- Step 1: Buyer Information -->
+        <div class="mb-6">
+          <h2 class="text-xl font-bold mb-4 flex items-center">
+            <span class="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center ml-2">1</span>
+            معلومات المشتري
+          </h2>
+          <p class="text-gray-600 mb-4">املأ معلوماتك</p>
+          
+          <form id="checkoutForm" class="space-y-4">
+            <div class="relative">
+              <label class="block text-gray-700 mb-2 font-bold text-sm">
+                <span class="text-red-500">*</span>
+                الاسم الكامل
+              </label>
+              <div class="relative">
+                <input 
+                  type="text" 
+                  name="fullName"
+                  required
+                  placeholder="أدخل الاسم هنا"
+                  class="w-full px-4 py-2 rounded-lg bg-white border-0 shadow-sm pr-10 focus:ring-2 focus:ring-blue-500 text-right text-sm"
+                />
+                <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                  <i class="fas fa-user"></i>
+                </span>
+              </div>
+            </div>
+
+            <div class="relative">
+              <label class="block text-gray-700 mb-2 font-bold text-sm">
+                <span class="text-red-500">*</span>
+                عنوان البريد الإلكتروني
+              </label>
+              <div class="relative">
+                <input 
+                  type="email" 
+                  name="email"
+                  required
+                  placeholder="أدخل عنوان البريد الإلكتروني هنا"
+                  class="w-full px-4 py-2 rounded-lg bg-white border-0 shadow-sm pr-10 focus:ring-2 focus:ring-blue-500 text-right text-sm"
+                />
+                <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                  <i class="fas fa-envelope"></i>
+                </span>
+              </div>
+            </div>
+
+            <div class="relative">
+              <label class="block text-gray-700 mb-2 font-bold text-sm">
+                <span class="text-red-500">*</span>
+                رقم الواتس اب
+              </label>
+              <div class="relative">
+                <input 
+                  type="tel" 
+                  name="whatsapp"
+                  required
+                  placeholder="أدخل الواتس اب هنا"
+                  class="w-full px-4 py-2 rounded-lg bg-white border-0 shadow-sm pr-10 focus:ring-2 focus:ring-blue-500 text-right text-sm"
+                />
+                <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                  <i class="fab fa-whatsapp"></i>
+                </span>
+              </div>
+            </div>
+
+            <div class="relative">
+              <label class="block text-gray-700 mb-2 font-bold text-sm">
+                ملاحظة
+              </label>
+              <div class="relative">
+                <textarea 
+                  name="notes"
+                  placeholder="أدخل الملاحظة هنا"
+                  rows="3"
+                  class="w-full px-4 py-2 rounded-lg bg-white border-0 shadow-sm pr-10 focus:ring-2 focus:ring-blue-500 text-right text-sm"
+                ></textarea>
+                <span class="absolute left-3 top-4 text-gray-400">
+                  <i class="fas fa-note-sticky"></i>
+                </span>
+              </div>
+            </div>
+
+            <!-- Step 2: Payment Method -->
+            <div class="relative mt-8">
+              <h2 class="text-xl font-bold mb-4 flex items-center">
+                <span class="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center ml-2">2</span>
+                اختر طريقة الدفع
+              </h2>
+              <p class="text-gray-600 mb-4">اختر أفضل طريقة دفع مناسبة لك</p>
+
+              <div class="grid grid-cols-1 gap-3">
+                <!-- Bank Transfer Option -->
+                <label class="relative bg-white p-3 rounded-lg shadow-sm cursor-pointer hover:shadow-md transition-shadow">
+                  <input 
+                    type="radio" 
+                    name="paymentMethod" 
+                    value="bank" 
+                    class="hidden" 
+                    checked
+                  />
+                  <div class="flex items-center space-x-3 space-x-reverse">
+                    <i class="fas fa-university text-xl text-blue-600"></i>
+                    <div class="flex-1">
+                      <h3 class="font-bold text-gray-800 text-sm">التحويل البنكي الفوري</h3>
+                      <p class="text-xs text-gray-600">حول مباشرة إلى حسابنا البنكي</p>
+                    </div>
+                    <div class="payment-check"></div>
+                  </div>
+                </label>
+
+                <!-- Credit Card Option -->
+                <label class="relative bg-white p-3 rounded-lg shadow-sm cursor-pointer hover:shadow-md transition-shadow">
+                  <input 
+                    type="radio" 
+                    name="paymentMethod" 
+                    value="card" 
+                    class="hidden"
+                  />
+                  <div class="flex items-center space-x-3 space-x-reverse">
+                    <i class="fas fa-credit-card text-xl text-green-600"></i>
+                    <div class="flex-1">
+                      <h3 class="font-bold text-gray-800 text-sm">بطاقة إئتمان</h3>
+                      <p class="text-xs text-gray-600">ادفع باستخدام بطاقتك البنكية</p>
+                    </div>
+                    <div class="payment-check"></div>
+                  </div>
+                </label>
+
+                <!-- PayPal Option -->
+                <label class="relative bg-white p-3 rounded-lg shadow-sm cursor-pointer hover:shadow-md transition-shadow">
+                  <input 
+                    type="radio" 
+                    name="paymentMethod" 
+                    value="paypal" 
+                    class="hidden"
+                  />
+                  <div class="flex items-center space-x-3 space-x-reverse">
+                    <i class="fab fa-paypal text-xl text-blue-500"></i>
+                    <div class="flex-1">
+                      <h3 class="font-bold text-gray-800 text-sm">PayPal</h3>
+                      <p class="text-xs text-gray-600">ادفع باستخدام حساب PayPal</p>
+                    </div>
+                    <div class="payment-check"></div>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <!-- Submit Button -->
+            <button 
+              type="submit"
+              class="w-full bg-orange-500 text-white py-3 rounded-lg text-base font-bold hover:bg-orange-600 transition-colors shadow-lg"
+            >
+              تأكيد الطلب
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <style>
+      /* Custom radio button styles */
+      .payment-check {
+        width: 20px;
+        height: 20px;
+        border: 2px solid #e2e8f0;
+        border-radius: 50%;
+        position: relative;
+        transition: all 0.2s;
+      }
+
+      input[type="radio"]:checked + div .payment-check {
+        border-color: #2563eb;
+      }
+
+      input[type="radio"]:checked + div .payment-check::after {
+        content: '';
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        background: #2563eb;
+        border-radius: 50%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      input[type="radio"]:checked + div {
+        background: #f0f7ff;
+        border: 1px solid #2563eb;
+      }
+    </style>
+
+    <script>
+      // Initialize variables
+      let paymentTimer;
+      const PAYMENT_TIMEOUT = 15 * 60 * 1000; // 15 minutes in milliseconds
+
+      // Wait for DOM to be loaded
+      document.addEventListener('DOMContentLoaded', function() {
+        const checkoutForm = document.getElementById('checkoutForm');
+        const paymentModal = document.getElementById('paymentModal');
+
+        // Initialize checkbox handlers
+        initializeCheckboxHandlers();
+        
+        // Initialize bank option handlers
+        initializeBankOptions();
+
+        // Form submission handler
+        if (checkoutForm) {
+          checkoutForm.addEventListener('submit', handleFormSubmit);
+        }
+
+        // Modal close handlers
+        if (paymentModal) {
+          // Close on outside click
+          paymentModal.addEventListener('click', function(event) {
+            if (event.target === paymentModal) {
+              closePaymentModal();
+            }
+          });
+
+          // Close on Escape key
+          document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape' && !paymentModal.classList.contains('hidden')) {
+              closePaymentModal();
+            }
+          });
+        }
+      });
+
+      function initializeCheckboxHandlers() {
+        // Virement checkbox
+        const confirmPayment = document.getElementById('confirmPayment');
+        const confirmButton = document.getElementById('confirmButton');
+        if (confirmPayment && confirmButton) {
+          confirmPayment.addEventListener('change', function() {
+            confirmButton.disabled = !this.checked;
+          });
+        }
+
+        // CIH checkbox
+        const confirmPaymentCih = document.getElementById('confirmPaymentCih');
+        const confirmButtonCih = document.getElementById('confirmButtonCih');
+        if (confirmPaymentCih && confirmButtonCih) {
+          confirmPaymentCih.addEventListener('change', function() {
+            confirmButtonCih.disabled = !this.checked;
+          });
+        }
+
+        // Cashplus checkbox
+        const confirmPaymentCashplus = document.getElementById('confirmPaymentCashplus');
+        const confirmButtonCashplus = document.getElementById('confirmButtonCashplus');
+        if (confirmPaymentCashplus && confirmButtonCashplus) {
+          confirmPaymentCashplus.addEventListener('change', function() {
+            confirmButtonCashplus.disabled = !this.checked;
+          });
+        }
+      }
+
+      function initializeBankOptions() {
+        const bankOptions = document.querySelectorAll('.bank-option');
+        bankOptions.forEach(option => {
+          option.addEventListener('click', function() {
+            const bankType = this.dataset.bank;
+            
+            // Hide all bank details
+            document.querySelectorAll('.bank-details').forEach(el => el.classList.add('hidden'));
+            
+            // Show selected bank details
+            const selectedDetails = document.getElementById(`${bankType}Details`);
+            const bankDetailsModal = document.getElementById('bankDetailsModal');
+            const timerContainer = document.getElementById('paymentTimerContainer');
+            
+            if (selectedDetails && bankDetailsModal && timerContainer) {
+              selectedDetails.classList.remove('hidden');
+              bankDetailsModal.classList.remove('hidden');
+              timerContainer.classList.remove('hidden');
+              startPaymentTimer();
+            }
+          });
+        });
+      }
+
+      function handleFormSubmit(event) {
+        event.preventDefault();
+        
+        const formData = new FormData(event.target);
+        const paymentMethod = formData.get('paymentMethod');
+
+        // Save order data
+        const orderData = {
+          full_name: formData.get('fullName'),
+          email: formData.get('email'),
+          whatsapp: formData.get('whatsapp'),
+          notes: formData.get('notes'),
+          payment_method: paymentMethod,
+          created_at: new Date().toISOString()
+        };
+
+        // Store order in localStorage
+        const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+        orders.push(orderData);
+        localStorage.setItem('orders', JSON.stringify(orders));
+
+        // Show payment modal
+        showPaymentModal(paymentMethod);
+      }
+
+      function showPaymentModal(paymentMethod) {
+        const bankModal = document.getElementById('bankModal');
+        const cardPaypalModal = document.getElementById('cardPaypalModal');
+        const modal = document.getElementById('paymentModal');
+        
+        if (!bankModal || !cardPaypalModal || !modal) return;
+
+        // Reset modal content
+        bankModal.classList.add('hidden');
+        cardPaypalModal.classList.add('hidden');
+        
+        // Show appropriate content based on payment method
+        if (paymentMethod === 'bank') {
+          bankModal.classList.remove('hidden');
+        } else {
+          cardPaypalModal.classList.remove('hidden');
+        }
+        
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closePaymentModal() {
+        const modal = document.getElementById('paymentModal');
+        if (!modal) return;
+
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+        document.body.style.overflow = 'auto';
+        
+        // Clear payment timer
+        if (paymentTimer) {
+          clearInterval(paymentTimer);
+          paymentTimer = null;
+        }
+      }
+
+      function startPaymentTimer() {
+        // Clear existing timer if any
+        if (paymentTimer) {
+          clearInterval(paymentTimer);
+        }
+
+        let timeLeft = PAYMENT_TIMEOUT;
+        const timerElement = document.getElementById('paymentTimer');
+        if (!timerElement) return;
+        
+        function updateTimer() {
+          const minutes = Math.floor(timeLeft / 60000);
+          const seconds = Math.floor((timeLeft % 60000) / 1000);
+          timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+          
+          if (timeLeft <= 0) {
+            clearInterval(paymentTimer);
+            closePaymentModal();
+            alert('انتهت مهلة الدفع. يرجى المحاولة مرة أخرى.');
+          }
+          timeLeft -= 1000;
+        }
+
+        updateTimer();
+        paymentTimer = setInterval(updateTimer, 1000);
+      }
+
+      function copyToClipboard(elementId) {
+        const element = document.getElementById(elementId);
+        if (!element) return;
+
+        const text = element.textContent;
+        
+        navigator.clipboard.writeText(text).then(() => {
+          // Show success feedback
+          const button = element.previousElementSibling;
+          if (!button) return;
+
+          const originalIcon = button.innerHTML;
+          button.innerHTML = '<i class="fas fa-check text-green-600"></i>';
+          
+          setTimeout(() => {
+            button.innerHTML = originalIcon;
+          }, 2000);
+        });
+      }
+
+      function handlePaymentConfirmation() {
+        // Redirect to thank you page
+        window.location.href = '/thank-you.html';
+      }
+    </script>
+  </body>
+</html>

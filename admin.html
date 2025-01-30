@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <title>لوحة التحكم - مكتبة قوالب Excel</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-50">
+    <!-- Login Form -->
+    <div id="loginForm" class="min-h-screen flex items-center justify-center p-4">
+      <div class="bg-white rounded-lg shadow-md p-6 w-full max-w-md">
+        <h2 class="text-2xl font-bold mb-6 text-center">تسجيل الدخول</h2>
+        <form id="adminLoginForm" class="space-y-4">
+          <div>
+            <label class="block text-gray-700 mb-2">البريد الإلكتروني</label>
+            <input 
+              type="email" 
+              id="loginEmail"
+              required
+              class="w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <div>
+            <label class="block text-gray-700 mb-2">كلمة المرور</label>
+            <input 
+              type="password" 
+              id="loginPassword"
+              required
+              class="w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <div id="loginError" class="text-red-500 text-sm hidden"></div>
+          <button 
+            type="submit"
+            class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            دخول
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div id="adminDashboard" class="min-h-screen p-4 hidden">
+      <div class="container mx-auto">
+        <div class="flex justify-between items-center mb-6">
+          <h1 class="text-2xl font-bold">طلبات العملاء</h1>
+          <button 
+            onclick="handleLogout()"
+            class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors"
+          >
+            تسجيل خروج
+          </button>
+        </div>
+        
+        <div class="bg-white rounded-lg shadow-md p-6">
+          <div class="overflow-x-auto">
+            <table class="min-w-full table-auto">
+              <thead>
+                <tr class="bg-gray-100">
+                  <th class="px-4 py-2">الاسم</th>
+                  <th class="px-4 py-2">البريد الإلكتروني</th>
+                  <th class="px-4 py-2">رقم الواتساب</th>
+                  <th class="px-4 py-2">طريقة الدفع</th>
+                  <th class="px-4 py-2">الملاحظات</th>
+                  <th class="px-4 py-2">تاريخ الطلب</th>
+                </tr>
+              </thead>
+              <tbody id="ordersTableBody">
+                <!-- سيتم ملء البيانات هنا -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // بيانات المستخدم الافتراضي
+      const ADMIN_EMAIL = 'admin@example.com';
+      const ADMIN_PASSWORD = 'admin123';
+
+      // التحقق من حالة تسجيل الدخول
+      function checkAuth() {
+        const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+        if (isLoggedIn) {
+          showAdminDashboard();
+        } else {
+          showLoginForm();
+        }
+      }
+
+      // إظهار لوحة التحكم
+      function showAdminDashboard() {
+        document.getElementById('loginForm').classList.add('hidden');
+        document.getElementById('adminDashboard').classList.remove('hidden');
+        fetchOrders();
+      }
+
+      // إظهار نموذج تسجيل الدخول
+      function showLoginForm() {
+        document.getElementById('loginForm').classList.remove('hidden');
+        document.getElementById('adminDashboard').classList.add('hidden');
+      }
+
+      // معالجة تسجيل الدخول
+      document.getElementById('adminLoginForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const email = document.getElementById('loginEmail').value;
+        const password = document.getElementById('loginPassword').value;
+        const errorDiv = document.getElementById('loginError');
+
+        if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
+          localStorage.setItem('isLoggedIn', 'true');
+          errorDiv.classList.add('hidden');
+          showAdminDashboard();
+        } else {
+          errorDiv.textContent = 'خطأ في تسجيل الدخول. تأكد من صحة البيانات.';
+          errorDiv.classList.remove('hidden');
+        }
+      });
+
+      // تسجيل الخروج
+      function handleLogout() {
+        localStorage.removeItem('isLoggedIn');
+        showLoginForm();
+      }
+
+      // جلب الطلبات وعرضها
+      function fetchOrders() {
+        const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+        const tableBody = document.getElementById('ordersTableBody');
+        tableBody.innerHTML = '';
+
+        if (orders.length === 0) {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td colspan="6" class="px-4 py-2 text-center">لا توجد طلبات حالياً</td>
+          `;
+          tableBody.appendChild(row);
+          return;
+        }
+
+        orders.forEach(order => {
+          const row = document.createElement('tr');
+          row.className = 'border-b hover:bg-gray-50';
+          
+          const date = new Date(order.created_at).toLocaleString('ar-SA');
+          
+          row.innerHTML = `
+            <td class="px-4 py-2">${order.full_name}</td>
+            <td class="px-4 py-2">${order.email}</td>
+            <td class="px-4 py-2">${order.whatsapp}</td>
+            <td class="px-4 py-2">${order.payment_method}</td>
+            <td class="px-4 py-2">${order.notes || '-'}</td>
+            <td class="px-4 py-2">${date}</td>
+          `;
+          
+          tableBody.appendChild(row);
+        });
+      }
+
+      // التحقق من حالة تسجيل الدخول عند تحميل الصفحة
+      checkAuth();
+
+      // تحديث البيانات كل 30 ثانية إذا كان المستخدم مسجل الدخول
+      setInterval(() => {
+        const dashboard = document.getElementById('adminDashboard');
+        if (!dashboard.classList.contains('hidden')) {
+          fetchOrders();
+        }
+      }, 30000);
+    </script>
+  </body>
+</html>

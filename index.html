@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <title>باقة قوالب Excel</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  </head>
+  <body class="bg-gray-50">
+    <!-- WhatsApp Button -->
+    <div class="fixed right-4 bottom-24 z-50 flex flex-col items-end space-y-2 animate-bounce">
+      <div class="bg-white px-4 py-2 rounded-lg shadow-lg text-sm">
+        💬 لأي استفسار؟ تواصل معنا الآن!
+      </div>
+      <a href="https://wa.me/212601754736" 
+         target="_blank"
+         class="bg-green-500 text-white p-3 md:p-4 rounded-full shadow-lg hover:bg-green-600 transition-all duration-300 hover:scale-110">
+        <i class="fab fa-whatsapp text-2xl md:text-3xl"></i>
+      </a>
+    </div>
+
+    <!-- Floating Order Button -->
+    <a href="#pricing" 
+       class="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50 bg-blue-600 text-white px-6 py-3 rounded-full shadow-lg hover:bg-blue-700 transition-all duration-300 hover:scale-105 flex items-center space-x-2">
+      <span>🛒 اطلب الآن</span>
+    </a>
+
+    <!-- Announcement Banner -->
+    <div class="bg-blue-600 text-white text-center py-2 md:py-3 px-4">
+      <p class="text-sm md:text-base">🚨 خصم 60% لفترة محدودة! سارع بالشراء قبل انتهاء العرض ⏳</p>
+    </div>
+
+    <!-- Simple Countdown Timer -->
+    <div class="py-8 text-center">
+      <div class="container mx-auto px-4">
+        <h3 class="text-xl md:text-2xl mb-6 font-bold text-gray-800">
+          ⏰ ينتهي العرض خلال
+        </h3>
+        <div class="flex justify-center items-center gap-4" id="countdown">
+          <div class="text-center">
+            <div id="hours" class="text-4xl font-bold text-blue-600">01</div>
+            <div class="text-sm text-gray-600">ساعة</div>
+          </div>
+          <div class="text-2xl font-bold text-gray-400">:</div>
+          <div class="text-center">
+            <div id="minutes" class="text-4xl font-bold text-blue-600">27</div>
+            <div class="text-sm text-gray-600">دقيقة</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Header Section -->
+    <header class="container mx-auto px-4 py-8 md:py-16 text-center">
+      <h1 class="text-3xl md:text-5xl font-bold mb-4 md:mb-6">
+        📊 احصل على باقة شاملة من 5000 قالب Excel و Google Sheets!
+      </h1>
+      <p class="text-lg md:text-xl text-gray-600 mb-4 md:mb-8">
+        هل تبحث عن قوالب جاهزة توفر لك الوقت والجهد؟
+      </p>
+      <p class="text-base md:text-lg text-gray-700 mb-8 max-w-3xl mx-auto">
+        لدينا الحل المثالي لك! هذه الباقة تحتوي على آلاف القوالب المصممة بعناية لتلبية جميع احتياجاتك العملية والشخصية.
+      </p>
+    </header>
+
+    <!-- Features Section -->
+    <section class="py-8 md:py-16">
+      <div class="container mx-auto px-4">
+        <h2 class="text-2xl md:text-3xl font-bold text-center mb-8 md:mb-12">💼 ما الذي يميز باقتنا؟</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 max-w-5xl mx-auto">
+          <!-- Variety -->
+          <div class="bg-white p-6 rounded-lg shadow-md">
+            <h3 class="text-xl font-bold mb-4">✔️ تنوع هائل</h3>
+            <ul class="space-y-2 text-right">
+              <li>• قوالب مالية (تحليل الميزانية، التقارير المالية، إدارة النفقات)</li>
+              <li>• قوالب إدارية (جداول المهام، تخطيط المشاريع، إدارة الوقت)</li>
+              <li>• قوالب تعليمية (خطط دراسية، قوائم متابعة الطلاب)</li>
+              <li>• قوالب شخصية (تنظيم الأهداف، تخطيط السفر)</li>
+            </ul>
+          </div>
+
+          <!-- Ease of Use -->
+          <div class="bg-white p-6 rounded-lg shadow-md">
+            <h3 class="text-xl font-bold mb-4">✔️ سهولة الاستخدام</h3>
+            <ul class="space-y-2 text-right">
+              <li>• متوافقة مع Excel وGoogle Sheets</li>
+              <li>• يمكن تعديلها بسهولة لتناسب احتياجاتك الخاصة</li>
+            </ul>
+          </div>
+
+          <!-- Professional Design -->
+          <div class="bg-white p-6 rounded-lg shadow-md">
+            <h3 class="text-xl font-bold mb-4">✔️ تصميم احترافي</h3>
+            <ul class="space-y-2 text-right">
+              <li>• كل قالب مصمم بشكل منظم ومريح للعين</li>
+              <li>• تنسيقات جاهزة للاستخدام الفوري</li>
+            </ul>
+          </div>
+
+          <!-- Language Support -->
+          <div class="bg-white p-6 rounded-lg shadow-md">
+            <h3 class="text-xl font-bold mb-4">✔️ دعم متعدد اللغات</h3>
+            <ul class="space-y-2 text-right">
+              <li>• القوالب متاحة باللغة العربية والإنجليزية</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Additional Features -->
+    <section class="bg-blue-50 py-8 md:py-16">
+      <div class="container mx-auto px-4">
+        <h2 class="text-2xl md:text-3xl font-bold text-center mb-8 md:mb-12">📂 باقة Excel المذهلة تضم أكثر من 5000 قالب متنوع ومميز</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 max-w-5xl mx-auto">
+          <div class="bg-white p-4 md:p-6 rounded-lg shadow-md text-center hover:shadow-lg transition-shadow">
+            <p class="text-base md:text-lg">✅ التحليلات المالية</p>
+          </div>
+          <div class="bg-white p-4 md:p-6 rounded-lg shadow-md text-center hover:shadow-lg transition-shadow">
+            <p class="text-base md:text-lg">✅ إدارة الفواتير</p>
+          </div>
+          <div class="bg-white p-4 md:p-6 rounded-lg shadow-md text-center hover:shadow-lg transition-shadow">
+            <p class="text-base md:text-lg">✅ حسابات القروض والتخطيط التقاعدي</p>
+          </div>
+          <div class="bg-white p-4 md:p-6 rounded-lg shadow-md text-center hover:shadow-lg transition-shadow">
+            <p class="text-base md:text-lg">✅ تقارير الأعمال وعروض المشاريع</p>
+          </div>
+          <div class="bg-white p-4 md:p-6 rounded-lg shadow-md text-center hover:shadow-lg transition-shadow">
+            <p class="text-base md:text-lg">✅ أدوات تتبع وتحليل البيانات</p>
+          </div>
+          <div class="bg-white p-4 md:p-6 rounded-lg shadow-md text-center hover:shadow-lg transition-shadow">
+            <p class="text-base md:text-lg">✅ تنظيم الوقت وجدولة الاجتماعات</p>
+          </div>
+          <div class="bg-white p-4 md:p-6 rounded-lg shadow-md text-center hover:shadow-lg transition-shadow">
+            <p class="text-base md:text-lg">✅ إدارة الفعاليات وتتبع الأهداف الشخصية</p>
+          </div>
+          <div class="bg-white p-4 md:p-6 rounded-lg shadow-md text-center hover:shadow-lg transition-shadow">
+            <p class="text-base md:text-lg">✅ خطط دراسية وجداول الموارد البشرية</p>
+          </div>
+          <div class="bg-white p-4 md:p-6 rounded-lg shadow-md text-center hover:shadow-lg transition-shadow">
+            <p class="text-base md:text-lg">✅ إعداد التقارير وتقييم الأداء</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Preview Section -->
+    <section class="py-8 md:py-16">
+      <div class="container mx-auto px-4">
+        <h2 class="text-2xl md:text-3xl font-bold text-center mb-8 md:mb-12">نماذج من القوالب المتوفرة</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 max-w-5xl mx-auto">
+          <!-- Budget Analysis Template -->
+          <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <img src="[[ضع رابط الصورة هنا]]" alt="قالب تحليل الميزانية" class="w-full h-48 md:h-64 object-cover"/>
+            <div class="p-4 md:p-6 text-center">
+              <h3 class="text-lg md:text-xl font-bold mb-2 md:mb-3">قالب تحليل الميزانية</h3>
+              <p class="text-sm md:text-base text-gray-600">قالب احترافي لتحليل الميزانية يساعدك في تتبع المصروفات والإيرادات بشكل دقيق، مع رسوم بيانية تلقائية ومؤشرات أداء رئيسية.</p>
+            </div>
+          </div>
+
+          <!-- Time Management Template -->
+          <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <img src="[[ضع رابط الصورة هنا]]" alt="قالب إدارة الوقت" class="w-full h-48 md:h-64 object-cover"/>
+            <div class="p-4 md:p-6 text-center">
+              <h3 class="text-lg md:text-xl font-bold mb-2 md:mb-3">قالب إدارة الوقت</h3>
+              <p class="text-sm md:text-base text-gray-600">نظام متكامل لإدارة الوقت والمهام، يتضمن جداول أسبوعية وشهرية، مع إمكانية تتبع الإنتاجية وتحديد الأولويات.</p>
+            </div>
+          </div>
+
+          <!-- Project Management Template -->
+          <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <img src="[[ضع رابط الصورة هنا]]" alt="قالب إدارة المشاريع" class="w-full h-48 md:h-64 object-cover"/>
+            <div class="p-4 md:p-6 text-center">
+              <h3 class="text-lg md:text-xl font-bold mb-2 md:mb-3">قالب إدارة المشاريع</h3>
+              <p class="text-sm md:text-base text-gray-600">قالب شامل لإدارة المشاريع يتضمن مخطط جانت، وتتبع المهام، وإدارة الموارد، مع تقارير تلقائية عن تقدم العمل.</p>
+            </div>
+          </div>
+
+          <!-- Financial Dashboard Template -->
+          <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <img src="[[ضع رابط الصورة هنا]]" alt="قالب لوحة التحكم المالية" class="w-full h-48 md:h-64 object-cover"/>
+            <div class="p-4 md:p-6 text-center">
+              <h3 class="text-lg md:text-xl font-bold mb-2 md:mb-3">قالب لوحة التحكم المالية</h3>
+              <p class="text-sm md:text-base text-gray-600">لوحة تحكم مالية متكاملة تعرض المؤشرات المالية الرئيسية، التدفقات النقدية، والتحليلات المالية بشكل مرئي وسهل الفهم.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Rest of the sections with centered text and improved mobile responsiveness -->
+    <section class="py-8 md:py-16 bg-blue-50">
+      <div class="container mx-auto px-4">
+        <h2 class="text-2xl md:text-3xl font-bold text-center mb-8 md:mb-12">✨ فوائد امتلاك هذه الباقة</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 max-w-5xl mx-auto">
+          <div class="bg-white p-4 md:p-6 rounded-lg shadow-md text-center">
+            <div class="text-3xl md:text-4xl mb-3 md:mb-4">⏱️</div>
+            <h3 class="text-lg md:text-xl font-bold mb-2 md:mb-4">توفير الوقت</h3>
+            <p class="text-sm md:text-base text-gray-700">لست بحاجة إلى إنشاء جداول من الصفر.</p>
+          </div>
+          <div class="bg-white p-4 md:p-6 rounded-lg shadow-md text-center">
+            <div class="text-3xl md:text-4xl mb-3 md:mb-4">📈</div>
+            <h3 class="text-lg md:text-xl font-bold mb-2 md:mb-4">رفع الإنتاجية</h3>
+            <p class="text-sm md:text-base text-gray-700">ركز على تحقيق أهدافك بدلاً من بناء القوالب.</p>
+          </div>
+          <div class="bg-white p-4 md:p-6 rounded-lg shadow-md text-center">
+            <div class="text-3xl md:text-4xl mb-3 md:mb-4">💰</div>
+            <h3 class="text-lg md:text-xl font-bold mb-2 md:mb-4">تكلفة منخفضة</h3>
+            <p class="text-sm md:text-base text-gray-700">بدلاً من شراء قوالب منفردة، ستحصل على مكتبة ضخمة بسعر واحد.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="py-8 md:py-16 bg-blue-50">
+      <div class="container mx-auto px-4 text-center">
+        <div class="bg-white rounded-lg shadow-lg p-6 md:p-8 max-w-2xl mx-auto">
+          <h2 class="text-2xl md:text-3xl font-bold mb-6 md:mb-8">💸 السعر الخاص</h2>
+          <div class="mb-4 md:mb-6">
+            <span class="text-xl md:text-2xl text-gray-500 line-through">200$</span>
+            <span class="text-3xl md:text-4xl font-bold text-blue-600 mr-2 md:mr-4">80$</span>
+            <span class="bg-red-500 text-white px-3 py-1 rounded-full text-sm">خصم 60%</span>
+          </div>
+          <p class="text-lg md:text-xl mb-6 md:mb-8">⏳ العرض ساري لفترة محدودة!</p>
+          <a 
+            href="/checkout.html"
+            class="inline-block bg-blue-600 text-white px-6 md:px-8 py-3 md:py-4 rounded-lg text-lg md:text-xl hover:bg-blue-700 transition-colors"
+          >
+            احصل على الباقة الآن! 🛒
+          </a>
+          <p class="mt-4 text-sm md:text-base text-gray-600">💳 طرق دفع مرنة وسريعة</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="py-8 md:py-16">
+      <div class="container mx-auto px-4">
+        <h2 class="text-2xl md:text-3xl font-bold text-center mb-8 md:mb-12">❓ الأسئلة الشائعة</h2>
+        <div class="max-w-3xl mx-auto space-y-6">
+          <div class="bg-white p-6 rounded-lg shadow-md">
+            <h3 class="text-xl font-bold mb-3">كيف أحصل على القوالب؟</h3>
+            <p class="text-gray-700">بعد الشراء، ستصلك روابط التحميل مباشرة إلى بريدك الإلكتروني.</p>
+          </div>
+
+          <div class="bg-white p-6 rounded-lg shadow-md">
+            <h3 class="text-xl font-bold mb-3">هل القوالب متوافقة مع Google Sheets؟</h3>
+            <p class="text-gray-700">نعم، جميع القوالب تعمل على Excel وGoogle Sheets.</p>
+          </div>
+
+          <div class="bg-white p-6 rounded-lg shadow-md text-center">
+            <div class="text-4xl mb-4">🔒</div>
+            <p class="text-lg font-bold text-blue-600">ضمان استرداد الأموال خلال 7 أيام</p>
+            <p class="text-gray-700">إذا لم تكن راضيًا عن المنتج 100%</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 md:py-12">
+      <div class="container mx-auto px-4">
+        <div class="text-center">
+          <div class="mb-4 md:mb-6">
+            <p class="mb-2 text-sm md:text-base">البريد الإلكتروني: support@example.com</p>
+            <p class="text-sm md:text-base">رقم الواتساب: +123456789</p>
+          </div>
+          <p class="text-xs md:text-sm text-gray-400">جميع الحقوق محفوظة © 2025</p>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Simple Fixed Countdown Logic
+      function initCountdown() {
+        const hours = 1;
+        const minutes = 27;
+        
+        document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+        document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+      }
+
+      // Initialize countdown when DOM is loaded
+      document.addEventListener('DOMContentLoaded', function() {
+        initCountdown();
+        
+        // Smooth scroll for the order button
+        document.querySelector('a[href="#pricing"]')?.addEventListener('click', function(e) {
+          e.preventDefault();
+          document.querySelector('#pricing')?.scrollIntoView({
+            behavior: 'smooth'
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
